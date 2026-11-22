@@ -15,7 +15,8 @@ import {
   Globe,
   Sparkles,
   FolderOpen,
-  Send
+  Send,
+  GitBranch,
 } from 'lucide-react';
 
 import './App.css';
@@ -126,13 +127,10 @@ const translations = {
     skill5: 'Adaptability',
     skill6: 'Public speaking',
     certificationsList: [
-      'DataCamp — Introduction to Python',
-      'DataCamp — Pandas',
-      'DataCamp — Object-Oriented Programming in Python',
-      'DataCamp — Introduction to Statistics in Python',
-      'HP LIFE — Data Science & Analytics',
-      'HP LIFE — Introduction to Cybersecurity',
-      'freeCodeCamp — Responsive Web Design (in progress)'
+      { name: 'DataCamp — Data Manipulation with pandas', file: '/certificates/datacamp-pandas.pdf' },
+      { name: 'DataCamp — Introduction to Statistics in Python', file: '/certificates/datacamp-statistics.pdf' },
+      { name: 'HP LIFE — Data Science & Analytics', file: '/certificates/hplife-data-science.pdf' },
+      { name: 'HP LIFE — Introduction to Cybersecurity', file: '/certificates/hplife-cybersecurity.pdf' }
     ],
     aboutTag: 'Curiosity · Creativity · Continuous learning'
   },
@@ -187,10 +185,10 @@ const translations = {
     internshipPlace: 'Russell Bedford · Qatar',
     internshipDescription:
       "Découverte d'un environnement professionnel en comptabilité et audit, accompagnement de l'équipe et découverte des processus de gestion.",
-    leadership: 'Présidente · Gaming Freaks Club',
+    leadership: 'membre · Gaming Freaks Club',
     leadershipPlace: 'ISITCom',
     leadershipDescription:
-      "Coordination des activités du club, participation à l'organisation d'événements et encouragement de la collaboration entre les membres.",
+      "partcipation aux activités du club.",
     projectsLabel: 'MES RÉALISATIONS',
     projectsTitle: 'Projets sélectionnés',
     projectsDescription:
@@ -242,13 +240,10 @@ const translations = {
     skill5: 'Adaptabilité',
     skill6: 'Prise de parole en public',
     certificationsList: [
-      'DataCamp — Introduction à Python',
-      'DataCamp — Pandas',
-      'DataCamp — Programmation orientée objet en Python',
-      'DataCamp — Introduction aux statistiques avec Python',
-      'HP LIFE — Data Science & Analytics',
-      'HP LIFE — Introduction à la cybersécurité',
-      'freeCodeCamp — Responsive Web Design (en cours)'
+      { name: 'DataCamp — Data Manipulation with pandas', file: '/certificates/datacamp-pandas.pdf' },
+      { name: 'DataCamp — Introduction aux statistiques avec Python', file: '/certificates/datacamp-statistics.pdf' },
+      { name: 'HP LIFE — Data Science & Analytics', file: '/certificates/hplife-data-science.pdf' },
+      { name: 'HP LIFE — Introduction à la cybersécurité', file: '/certificates/hplife-cybersecurity.pdf' }
     ],
     aboutTag: 'Curiosité · Créativité · Apprentissage continu'
   }
@@ -279,6 +274,8 @@ const projects = [
     title: 'project1',
     type: 'project1Type',
     description: 'project1Description',
+    image: '/images/projects/reservi.png',
+    github: 'https://github.com/haninebenromdhane/Reservi',
     technologies: ['Next.js', 'React', 'Tailwind CSS']
   },
   {
@@ -286,13 +283,17 @@ const projects = [
     title: 'project2',
     type: 'project2Type',
     description: 'project2Description',
-    technologies: ['PostgreSQL', 'Node.js', 'JavaScript']
+    image: '/images/projects/edumatch.png',
+    github: 'https://github.com/haninebenromdhane/Match-students',
+    technologies: ['PostgreSQL', 'Node.js', 'JavaScript'],
   },
   {
     id: '03',
     title: 'project3',
     type: 'project3Type',
     description: 'project3Description',
+    image: '/images/projects/votecom.png',
+    github: 'https://github.com/haninebenromdhane/VoteAPP',
     technologies: ['Database Design', 'Security', 'Web Development']
   }
 ];
@@ -525,7 +526,12 @@ function App() {
             <h3><Award size={20} /> {t.certifications}</h3>
             <ul>
               {t.certificationsList.map((certification) => (
-                <li key={certification}>{certification}</li>
+                <li key={certification.file}>
+                  <a href={certification.file} target="_blank" rel="noreferrer">
+                    {certification.name}
+                    <ArrowUpRight size={13} />
+                  </a>
+                </li>
               ))}
             </ul>
           </div>
@@ -583,19 +589,41 @@ function App() {
           <div className="projects-grid">
             {projects.map((project) => (
               <article className="project-card" key={project.id}>
-                <div className="project-top">
-                  <span>{project.id} / 03</span>
-                  <FolderOpen size={21} />
+                <div className="project-image">
+                  <img
+                    src={project.image}
+                    alt={`${t[project.title]} interface screenshot`}
+                    loading="lazy"
+                  />
                 </div>
 
-                <span className="project-type">{t[project.type]}</span>
-                <h3>{t[project.title]}</h3>
-                <p>{t[project.description]}</p>
+                <div className="project-card-content">
+                  <div className="project-top">
+                    <span>{project.id} / 03</span>
+                    <FolderOpen size={21} />
+                  </div>
 
-                <div className="project-technologies">
-                  {project.technologies.map((technology) => (
-                    <span key={technology}>{technology}</span>
-                  ))}
+                  <span className="project-type">{t[project.type]}</span>
+                  <h3>{t[project.title]}</h3>
+                  <p>{t[project.description]}</p>
+
+                  <div className="project-technologies">
+                    {project.technologies.map((technology) => (
+                      <span key={technology}>{technology}</span>
+                    ))}
+                  </div>
+
+                  <a
+                    className="project-github"
+                    href={project.github}
+                    target="_blank"
+                    rel="noreferrer"
+                    aria-label={`View ${t[project.title]} on GitHub`}
+                  >
+                    <GitBranch size={17} />
+                    View on GitHub
+                    <ArrowUpRight size={16} />
+                  </a>
                 </div>
               </article>
             ))}
